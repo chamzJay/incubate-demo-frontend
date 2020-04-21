@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import AddItem from "../AddItem/AddItem";
+import MessageBar from "../MessageBar/MessageBar";
 function SellerDashboard() {
   const [type, setType] = useState("");
   const [msg, setMsg] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const displayMessage = (type, msg) => {
     setType(type);
@@ -15,51 +17,34 @@ function SellerDashboard() {
     }
   };
 
+  const setLoadingState = (state) => {
+    setLoading(state);
+  };
+
   const msgComponent = () => {
     if (msg === "" || type === "") {
       return;
     }
-    return (
-      <div
-        className="center"
-        style={{
-          marginTop: 10,
-          padding: 10,
-          color: "white",
-          backgroundColor: type === "warning" ? "red" : "green",
-        }}
-      >
-        <i className="material-icons left">
-          {type === "warning" ? "error" : "check"}
-        </i>
-        <span>{msg}</span>
-      </div>
-    );
+    return <MessageBar msg={msg} type={type} />;
   };
   return (
     <div className="container">
       {msgComponent()}
-      <div className="row">
-        <div className="col left">
-          <h3>Add Items</h3>
-        </div>
-        <div className="col right">
-          <div className="preloader-wrapper small active">
-            <div className="spinner-layer spinner-blue-only">
-              <div className="circle-clipper left">
-                <div className="circle"></div>
-              </div>
-              <div className="gap-patch">
-                <div className="circle"></div>
-              </div>
-              <div className="circle-clipper right">
-                <div className="circle"></div>
-              </div>
-            </div>
+
+      <h3>Add Items</h3>
+
+      <AddItem
+        setLoadingState={setLoadingState}
+        displayMessage={displayMessage}
+      ></AddItem>
+      {loading && (
+        <div>
+          <span>Posting....</span>
+          <div className="progress">
+            <div className="indeterminate"></div>
           </div>
         </div>
-      </div>
-      <AddItem displayMessage={displayMessage}></AddItem>
+      )}
     </div>
   );
 }

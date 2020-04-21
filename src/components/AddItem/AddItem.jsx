@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function AddItem({ displayMessage }) {
+function AddItem({ displayMessage, setLoadingState }) {
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [productPrice, setProductPrice] = useState(0);
@@ -22,9 +22,11 @@ function AddItem({ displayMessage }) {
       displayMessage("warning", "Please fill all fields correctly.");
       return;
     }
+    setLoadingState(true);
     console.log(product);
     displayMessage("success", "Product added successfully");
     clearForm();
+    setLoadingState(false);
   };
 
   const clearForm = () => {

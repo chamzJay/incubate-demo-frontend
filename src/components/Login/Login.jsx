@@ -1,19 +1,40 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import MessageBox from "../MessageBar/MessageBar";
+function Login({ handleLogState }) {
+  const history = useHistory();
 
-function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const [message, setMessage] = useState("");
+  const [type, setType] = useState("");
+
+  const validateForm = () => {
+    if (username === "" || password === "") {
+      return false;
+    }
+    return true;
+  };
+
   const handleLogin = () => {
+    if (!validateForm()) {
+      setMessage("Please fill the form correctly");
+      setType("warning");
+      return;
+    }
     const user = {
       name: username,
       password: password,
     };
     console.log(user);
+    handleLogState(true);
+    history.push("/");
   };
 
   return (
     <div className="container">
+      {message !== "" && <MessageBox msg={message} type={type} />}
       <div className="card blue-grey darken-1" style={{ marginTop: "20vh" }}>
         <div className="card-content white-text">
           <span className="card-title">

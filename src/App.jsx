@@ -8,16 +8,16 @@ export class App extends Component {
   state = {
     isLogged: true,
     user: {
-      role: "d",
+      role: "customers",
       name: "chamara",
     },
   };
 
   render() {
-    const handleLogout = () => {
+    const handleLogState = (state) => {
       console.log("fd");
       this.setState({
-        isLogged: false,
+        isLogged: state,
       });
     };
     return (
@@ -25,7 +25,7 @@ export class App extends Component {
         <Header
           userName={this.state.user.name}
           isLogged={this.state.isLogged}
-          handleLogout={handleLogout}
+          handleLogState={handleLogState}
         ></Header>
         <Switch>
           <Route
@@ -33,7 +33,10 @@ export class App extends Component {
             path="/"
             component={() => <Dashboard user={this.state.user.role} />}
           />
-          <Route path="/login" component={Login} />
+          <Route
+            path="/login"
+            component={() => <Login handleLogState={handleLogState} />}
+          />
         </Switch>
         <Footer></Footer>
       </BrowserRouter>
