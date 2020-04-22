@@ -31,7 +31,7 @@ function Login({ handleLogState, setUser }) {
     };
     try {
       let userData = await axios.post(
-        "http://localhost:3000/api/user/login",
+        process.env.REACT_APP_API_URL + "/api/user/login",
         user
       );
       setUser(userData.data);

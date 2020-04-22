@@ -27,7 +27,7 @@ function AddItem({ displayMessage, setLoadingState, user_id }) {
     setLoadingState(true);
 
     try {
-      await axios.post("http://localhost:3000/api/product", product);
+      await axios.post(process.env.REACT_APP_API_URL + "/api/product", product);
       displayMessage("success", "Product added successfully");
     } catch (error) {
       displayMessage("warning", error.toString());

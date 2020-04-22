@@ -12,7 +12,9 @@ function CustomerDashboard() {
     let skip = key * 10;
     try {
       let productList = await axios.get(
-        "http://localhost:3000/api/product/all?skip=" + skip.toString()
+        process.env.REACT_APP_API_URL +
+          "/api/product/all?skip=" +
+          skip.toString()
       );
       setProductList(productList.data.products);
       setNumberOfPages(calculateNumberOfPages(productList.data.count, 10));
@@ -25,7 +27,7 @@ function CustomerDashboard() {
     const fetchAPI = async () => {
       try {
         let productList = await axios.get(
-          "http://localhost:3000/api/product/all?skip=0"
+          process.env.REACT_APP_API_URL + "/api/product/all?skip=0"
         );
         setProductList(productList.data.products);
         setNumberOfPages(calculateNumberOfPages(productList.data.count, 10));
