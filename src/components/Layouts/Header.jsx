@@ -1,12 +1,8 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 
 export default function Header({ username, isLogged, handleLogState }) {
-  const history = useHistory();
-
   const logoutUser = () => {
     handleLogState(false);
-    history.push("/login");
   };
 
   return (

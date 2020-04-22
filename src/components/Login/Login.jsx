@@ -36,7 +36,7 @@ function Login({ handleLogState, setUser }) {
       );
       setUser(userData.data);
       handleLogState(true);
-      history.push("/");
+      history.push("/dashboard");
     } catch (e) {
       setMessage(e.toString());
       setType("warning");

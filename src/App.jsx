@@ -6,19 +6,17 @@ import Login from "./components/Login/Login";
 import Footer from "./components/Layouts/Footer";
 export class App extends Component {
   state = {
-    isLogged: true,
+    isLogged: false,
     user: {},
   };
 
   render() {
     const handleLogState = (state) => {
-      console.log("fd");
       this.setState({
         isLogged: state,
       });
     };
     const setUser = (user) => {
-      console.log(user);
       this.setState({
         user,
       });
@@ -34,12 +32,17 @@ export class App extends Component {
           <Route
             exact
             path="/"
-            component={() => <Dashboard user={this.state.user} />}
-          />
-          <Route
-            path="/login"
             component={() => (
               <Login handleLogState={handleLogState} setUser={setUser} />
+            )}
+          />
+          <Route
+            path="/dashboard"
+            component={() => (
+              <Dashboard
+                user={this.state.user}
+                isLogged={this.state.isLogged}
+              />
             )}
           />
         </Switch>
