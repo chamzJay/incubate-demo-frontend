@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import MessageBox from "../MessageBar/MessageBar";
-function Login({ handleLogState }) {
+import axios from "axios";
+
+function Login({ handleLogState, setUser }) {
   const history = useHistory();
 
   const [username, setUsername] = useState("");
@@ -17,19 +19,28 @@ function Login({ handleLogState }) {
     return true;
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!validateForm()) {
       setMessage("Please fill the form correctly");
       setType("warning");
       return;
     }
     const user = {
-      name: username,
-      password: password,
+      username,
+      password,
     };
-    console.log(user);
-    handleLogState(true);
-    history.push("/");
+    try {
+      let userData = await axios.post(
+        "http://localhost:3000/api/user/login",
+        user
+      );
+      setUser(userData.data);
+      handleLogState(true);
+      history.push("/");
+    } catch (e) {
+      setMessage(e.toString());
+      setType("warning");
+    }
   };
 
   return (

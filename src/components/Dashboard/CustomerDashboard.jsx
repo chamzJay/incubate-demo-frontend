@@ -1,25 +1,45 @@
 import React, { useEffect, useState } from "react";
 import Product from "../Product/Product";
+import axios from "axios";
 function CustomerDashboard() {
   const [productList, setProductList] = useState([]);
   const [numberOfPages, setNumberOfPages] = useState(0);
+
+  const calculateNumberOfPages = (total, divider) => {
+    return Math.ceil(total / divider);
+  };
+  const fetchDataFromPaginate = async (key) => {
+    let skip = key * 10;
+    try {
+      let productList = await axios.get(
+        "http://localhost:3000/api/product/all?skip=" + skip.toString()
+      );
+      setProductList(productList.data.products);
+      setNumberOfPages(calculateNumberOfPages(productList.data.count, 10));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    setProductList([
-      {
-        id: "01",
-        name: "Sony Vega",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat dolorem id dolore nisi? Quia dolore cumque libero maxime nobis omnis enim laboriosam repellendus! Possimus impedit consequatur quis veritatis animi quaerat.",
-        price: "21",
-        seller: "chamara",
-      },
-    ]);
-    setNumberOfPages(10);
+    const fetchAPI = async () => {
+      try {
+        let productList = await axios.get(
+          "http://localhost:3000/api/product/all?skip=0"
+        );
+        setProductList(productList.data.products);
+        setNumberOfPages(calculateNumberOfPages(productList.data.count, 10));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchAPI();
   }, []);
+
   const productListComponent = () => {
     return productList.map((product) => {
       return (
-        <div className="col s12 m6 l4" key={product.id}>
+        <div className="col s12 m6 l4" key={product._id}>
           <Product product={product}></Product>
         </div>
       );
@@ -30,9 +50,7 @@ function CustomerDashboard() {
     return (
       <ul className="pagination">
         <li className="waves-effect">
-          <div className="btn-small z-depth-0 transparent">
-            <i className="material-icons red-text">chevron_left</i>
-          </div>
+          <i className="material-icons red-text">chevron_left</i>
         </li>
 
         {[...Array(numberOfPages)].map((e, i) => (
@@ -41,14 +59,19 @@ function CustomerDashboard() {
             key={i}
             style={{ marginRight: 2 }}
           >
-            <div className="btn-small z-depth-0 transparent">{i + 1}</div>
+            <div
+              onClick={() => {
+                fetchDataFromPaginate(i);
+              }}
+              className="btn-small z-depth-0 transparent"
+            >
+              {i + 1}
+            </div>
           </li>
         ))}
 
         <li className="waves-effect">
-          <div className="btn-small z-depth-0 transparent">
-            <i className="material-icons red-text">chevron_right</i>
-          </div>
+          <i className="material-icons red-text">chevron_right</i>
         </li>
       </ul>
     );

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import axios from "axios";
 
-function AddItem({ displayMessage, setLoadingState }) {
+function AddItem({ displayMessage, setLoadingState, user_id }) {
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [productPrice, setProductPrice] = useState(0);
@@ -12,19 +13,25 @@ function AddItem({ displayMessage, setLoadingState }) {
     return true;
   };
 
-  const postProduct = () => {
+  const postProduct = async () => {
     const product = {
       name: productName,
       description: productDescription,
       price: productPrice,
+      seller: user_id,
     };
     if (!validateForm()) {
       displayMessage("warning", "Please fill all fields correctly.");
       return;
     }
     setLoadingState(true);
-    console.log(product);
-    displayMessage("success", "Product added successfully");
+
+    try {
+      await axios.post("http://localhost:3000/api/product", product);
+      displayMessage("success", "Product added successfully");
+    } catch (error) {
+      displayMessage("warning", error.toString());
+    }
     clearForm();
     setLoadingState(false);
   };

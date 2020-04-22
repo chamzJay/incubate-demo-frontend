@@ -4,7 +4,11 @@ import CustomerDashboard from "./CustomerDashboard";
 function Dashboard({ user }) {
   return (
     <div>
-      {user === "customer" ? <CustomerDashboard /> : <SellerDashboard />}
+      {user.role === "customer" ? (
+        <CustomerDashboard />
+      ) : (
+        <SellerDashboard user_id={user.user_id} />
+      )}
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
-export default function Header({ userName, isLogged, handleLogState }) {
+export default function Header({ username, isLogged, handleLogState }) {
   const history = useHistory();
 
   const logoutUser = () => {
@@ -21,7 +21,7 @@ export default function Header({ userName, isLogged, handleLogState }) {
         {isLogged && (
           <ul id="nav-mobile" className="right ">
             <li style={{ marginRight: 30 }}>
-              <span>Hi {userName}</span>
+              <span>Hi {username}</span>
             </li>
             <li>
               <div

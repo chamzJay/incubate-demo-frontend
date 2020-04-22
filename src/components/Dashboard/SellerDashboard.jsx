@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AddItem from "../AddItem/AddItem";
 import MessageBar from "../MessageBar/MessageBar";
-function SellerDashboard() {
+function SellerDashboard({ user_id }) {
   const [type, setType] = useState("");
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
@@ -34,6 +34,7 @@ function SellerDashboard() {
       <h3>Add Items</h3>
 
       <AddItem
+        user_id={user_id}
         setLoadingState={setLoadingState}
         displayMessage={displayMessage}
       ></AddItem>

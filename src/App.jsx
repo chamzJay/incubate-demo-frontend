@@ -7,10 +7,7 @@ import Footer from "./components/Layouts/Footer";
 export class App extends Component {
   state = {
     isLogged: true,
-    user: {
-      role: "customers",
-      name: "chamara",
-    },
+    user: {},
   };
 
   render() {
@@ -20,10 +17,16 @@ export class App extends Component {
         isLogged: state,
       });
     };
+    const setUser = (user) => {
+      console.log(user);
+      this.setState({
+        user,
+      });
+    };
     return (
       <BrowserRouter>
         <Header
-          userName={this.state.user.name}
+          username={this.state.user.username}
           isLogged={this.state.isLogged}
           handleLogState={handleLogState}
         ></Header>
@@ -31,11 +34,13 @@ export class App extends Component {
           <Route
             exact
             path="/"
-            component={() => <Dashboard user={this.state.user.role} />}
+            component={() => <Dashboard user={this.state.user} />}
           />
           <Route
             path="/login"
-            component={() => <Login handleLogState={handleLogState} />}
+            component={() => (
+              <Login handleLogState={handleLogState} setUser={setUser} />
+            )}
           />
         </Switch>
         <Footer></Footer>
